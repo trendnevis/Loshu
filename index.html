@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>لوشو گرید شخصی</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #f5f0e7;
+            font-family: 'Segoe UI', 'Tahoma', sans-serif;
+            padding: 16px 12px 40px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #fffcf8;
+            border-radius: 32px;
+            padding: 20px 16px 28px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+            border: 1px solid #ede6db;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #4b3a2b;
+            text-align: center;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        .subhead {
+            text-align: center;
+            font-size: 13px;
+            color: #7d6b58;
+            border-bottom: 1px dashed #dcd0c0;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            color: #4b3a2b;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .hint {
+            display: block;
+            font-size: 12px;
+            color: #a48d78;
+            margin-top: 2px;
+            font-weight: 400;
+        }
+        .input-wrapper {
+            position: relative;
+        }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 1.5px solid #ddd0c0;
+            border-radius: 18px;
+            background: #fefcf9;
+            transition: 0.2s;
+            color: #2d241b;
+            font-weight: 400;
+        }
+        input:focus {
+            outline: none;
+            border-color: #b8a48c;
+            background: #fffdfa;
+            box-shadow: 0 0 0 3px rgba(180, 160, 140, 0.15);
+        }
+        .input-error {
+            border-color: #d45a4a !important;
+            background: #fff6f3 !important;
+        }
+
+        .error-msg {
+            color: #c0392b;
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-weight: 450;
+            background: #fde8e4;
+            padding: 8px 14px;
+            border-radius: 30px;
+            width: fit-content;
+        }
+        .error-msg.show {
+            display: flex;
+        }
+
+        .date-select-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .date-select-group select {
+            flex: 1 1 0;
+            min-width: 60px;
+            padding: 12px 6px;
+            font-size: 15px;
+            border: 1.5px solid #ddd0c0;
+            border-radius: 18px;
+            background: #fefcf9;
+            color: #2d241b;
+            appearance: auto;
+            text-align: center;
+        }
+        .date-select-group select:focus {
+            outline: none;
+            border-color: #b8a48c;
+            box-shadow: 0 0 0 3px rgba(180,160,140,0.15);
+        }
+
+        .btn {
+            width: 100%;
+            background: #dacfc1;
+            border: none;
+            padding: 14px 12px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d241b;
+            transition: 0.2s;
+            margin-top: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #a18d78;
+            letter-spacing: 0.5px;
+        }
+        .btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #a18d78;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #a18d78;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        /* result */
+        .result-section {
+            margin-top: 24px;
+            background: #f7f2ea;
+            border-radius: 28px;
+            padding: 16px 12px 12px;
+        }
+        .grid-title {
+            text-align: center;
+            font-weight: 600;
+            font-size: 18px;
+            color: #4b3a2b;
+            margin-bottom: 12px;
+        }
+        .lo-shu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-width: 300px;
+            margin: 0 auto 12px;
+        }
+        .cell {
+            background: #fffcf8;
+            border-radius: 18px;
+            padding: 10px 2px;
+            text-align: center;
+            border: 1px solid #e5dace;
+            aspect-ratio: 1 / 0.9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: 0.1s;
+        }
+        .cell-number {
+            font-size: 26px;
+            font-weight: 700;
+            color: #2d241b;
+            line-height: 1.1;
+        }
+        .cell-count {
+            font-size: 20px;
+            font-weight: 600;
+            padding: 0 12px;
+            border-radius: 30px;
+            margin-top: 2px;
+            min-width: 32px;
+            background: #ede4d9;
+            color: #6b5a48;
+        }
+        .cell-count.zero { background: #e0d6c9; color: #a48d78; font-weight: 400; }
+        .cell-count.normal { background: #ede4d9; color: #6b5a48; }
+        .cell-count.strong { background: #b8d9b0; color: #2d5a2a; }
+        .cell-count.very-strong { background: #f0d58c; color: #7a5c1a; }
+        .cell-count.extreme { background: #e8a89e; color: #7a2a1a; }
+
+        .cell-interp {
+            font-size: 10px;
+            color: #7d6b58;
+            margin-top: 2px;
+            font-weight: 400;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 14px;
+            font-size: 11px;
+            color: #4b3a2b;
+            margin: 8px 0 4px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+        }
+
+        .stats {
+            background: #ede4d9;
+            border-radius: 40px;
+            padding: 10px 8px;
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px 8px;
+            font-size: 14px;
+        }
+        .stat-item {
+            background: #fcf8f2;
+            padding: 2px 12px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .stat-item strong { font-weight: 600; color: #2d241b; }
+
+        .missing-numbers {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 14px;
+            background: #f0e8de;
+            padding: 8px 10px;
+            border-radius: 40px;
+        }
+        .missing-numbers span { font-weight: 600; color: #a54535; }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #dcd0c0;
+            margin: 14px 0 10px;
+        }
+
+        .calculation-details {
+            background: #f2ece2;
+            border-radius: 24px;
+            padding: 12px 14px;
+            font-size: 13px;
+            color: #3f3327;
+            line-height: 1.8;
+            margin-top: 10px;
+            direction: ltr;
+            text-align: left;
+            overflow-x: auto;
+            word-break: break-word;
+        }
+        .calculation-details b {
+            color: #4b3a2b;
+            font-weight: 600;
+        }
+        .calculation-details .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+
+        /* guide table */
+        .guide-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin: 8px 0 2px;
+            background: #fcf8f2;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .guide-table td {
+            padding: 4px 6px;
+            border: 1px solid #e0d6c8;
+            text-align: center;
+            font-weight: 400;
+            color: #2d241b;
+        }
+        .guide-table .header {
+            background: #e8dfd3;
+            font-weight: 600;
+        }
+
+        .footnote {
+            font-size: 11px;
+            color: #998b7a;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 440px) {
+            .container { padding: 16px 10px 20px; }
+            .cell-number { font-size: 22px; }
+            .cell-count { font-size: 18px; }
+            .lo-shu-grid { gap: 5px; max-width: 260px; }
+            .date-select-group select { padding: 10px 4px; font-size: 14px; }
+            .calculation-details { font-size: 12px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <h1>🔮 لوشو گرید شخصی</h1>
+    <div class="subhead">بر اساس نام کامل و تاریخ تولد</div>
+
+    <!-- فرم -->
+    <div class="form-group">
+        <label for="nameInput">نام کامل (نام و نام‌خانوادگی) — فقط حروف انگلیسی</label>
+        <div class="input-wrapper">
+            <input type="text" id="nameInput" placeholder="مثال: MARYAM JANE" value="" autocomplete="off">
+        </div>
+        <span class="hint">فقط حروف A-Z و فاصله مجاز است</span>
+        <div id="nameError" class="error-msg">⚠️ فقط حروف انگلیسی (A-Z) و فاصله مجاز است</div>
+    </div>
+
+    <div class="form-group">
+        <label>تاریخ تولد</label>
+        <div class="date-select-group" id="dateSelectGroup">
+            <select id="daySelect"></select>
+            <select id="monthSelect"></select>
+            <select id="yearSelect"></select>
+        </div>
+        <span class="hint">روز، ماه، سال</span>
+        <div id="dateError" class="error-msg">⚠️ تاریخ نامعتبر است</div>
+    </div>
+
+    <button class="btn" id="generateBtn" disabled>✨ محاسبه لوشو</button>
+
+    <!-- جدول راهنمای حروف کامل -->
+    <div style="margin-top: 18px; background: #f8f3ec; border-radius: 20px; padding: 6px 8px;">
+        <div style="font-size:12px; font-weight:500; color:#4b3a2b; text-align:center; margin-bottom:2px;">راهنمای تبدیل حروف به اعداد</div>
+        <table class="guide-table">
+            <tr>
+                <td class="header">A</td><td>1</td><td class="header">B</td><td>2</td><td class="header">C</td><td>3</td>
+                <td class="header">D</td><td>4</td><td class="header">E</td><td>5</td>
+                <td class="header">F</td><td>6</td>
+            </tr>
+            <tr>
+                <td class="header">G</td><td>7</td><td class="header">H</td><td>8</td><td class="header">I</td><td>9</td>
+                <td class="header">J</td><td>1</td><td class="header">K</td><td>2</td>
+                <td class="header">L</td><td>3</td>
+            </tr>
+            <tr>
+                <td class="header">M</td><td>4</td><td class="header">N</td><td>5</td><td class="header">O</td><td>6</td>
+                <td class="header">P</td><td>7</td><td class="header">Q</td><td>8</td>
+                <td class="header">R</td><td>9</td>
+            </tr>
+            <tr>
+                <td class="header">S</td><td>1</td><td class="header">T</td><td>2</td><td class="header">U</td><td>3</td>
+                <td class="header">V</td><td>4</td><td class="header">W</td><td>5</td>
+                <td class="header">X</td><td>6</td>
+            </tr>
+            <tr>
+                <td class="header">Y</td><td>7</td><td class="header">Z</td><td>8</td>
+                <td colspan="8" style="border-color:transparent; background:transparent;"></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- نتیجه -->
+    <div id="resultArea" class="result-section" style="display: none;">
+        <div class="grid-title">▫️ جدول لوشو ▫️</div>
+        <div class="lo-shu-grid" id="gridContainer"></div>
+
+        <div class="legend">
+            <span class="legend-item"><span class="legend-color" style="background:#e0d6c9;"></span> 0 = غایب</span>
+            <span class="legend-item"><span class="legend-color" style="background:#ede4d9;"></span> 1 = طبیعی</span>
+            <span class="legend-item"><span class="legend-color" style="background:#b8d9b0;"></span> 2 = قوی</span>
+            <span class="legend-item"><span class="legend-color" style="background:#f0d58c;"></span> 3 = بسیار قوی</span>
+            <span class="legend-item"><span class="legend-color" style="background:#e8a89e;"></span> 4+ = افراطی</span>
+        </div>
+
+        <div id="statsContainer" class="stats"></div>
+        <div id="missingContainer" class="missing-numbers"></div>
+
+        <hr>
+        <div id="calculationDetails" class="calculation-details"></div>
+        <div class="footnote">اعداد بر اساس سیستم فیتاگورثی-کالدئا</div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // --- جداول تبدیل ---
+        const letterMap = {
+            'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8,'I':9,
+            'J':1,'K':2,'L':3,'M':4,'N':5,'O':6,'P':7,'Q':8,'R':9,
+            'S':1,'T':2,'U':3,'V':4,'W':5,'X':6,'Y':7,'Z':8
+        };
+
+        const interpMap = {
+            0: 'غایب',
+            1: 'طبیعی',
+            2: 'قوی',
+            3: 'بسیار قوی',
+            4: 'افراطی',
+            5: 'افراطی'
+        };
+
+        // --- المان‌ها ---
+        const nameInput = document.getElementById('nameInput');
+        const daySelect = document.getElementById('daySelect');
+        const monthSelect = document.getElementById('monthSelect');
+        const yearSelect = document.getElementById('yearSelect');
+        const nameError = document.getElementById('nameError');
+        const dateError = document.getElementById('dateError');
+        const generateBtn = document.getElementById('generateBtn');
+        const resultArea = document.getElementById('resultArea');
+        const gridContainer = document.getElementById('gridContainer');
+        const statsContainer = document.getElementById('statsContainer');
+        const missingContainer = document.getElementById('missingContainer');
+        const calculationDetails = document.getElementById('calculationDetails');
+
+        // --- توابع عمومی ---
+        function digitalRoot(num) {
+            let s = String(num);
+            while (s.length > 1) {
+                let sum = 0;
+                for (let ch of s) sum += parseInt(ch, 10);
+                s = String(sum);
+            }
+            return parseInt(s, 10);
+        }
+
+        function isValidDate(year, month, day) {
+            const date = new Date(year, month - 1, day);
+            return date.getFullYear() === year &&
+                   date.getMonth() === month - 1 &&
+                   date.getDate() === day;
+        }
+
+        function isValidEnglishName(str) {
+            return /^[A-Za-z\s]+$/.test(str) && str.trim().length > 0;
+        }
+
+        function cleanName(str) {
+            return str.trim().replace(/\s+/g, ' ');
+        }
+
+        function pad2(num) {
+            return String(num).padStart(2, '0');
+        }
+
+        // --- پر کردن سلکت‌ها ---
+        function populateSelects() {
+            for (let i = 1; i <= 31; i++) {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = i;
+                daySelect.appendChild(opt);
+            }
+            for (let i = 1; i <= 12; i++) {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = i;
+                monthSelect.appendChild(opt);
+            }
+            for (let i = 2026; i >= 1930; i--) {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = i;
+                yearSelect.appendChild(opt);
+            }
+            daySelect.value = 17;
+            monthSelect.value = 8;
+            yearSelect.value = 1995;
+        }
+        populateSelects();
+
+        // --- تابع اصلی محاسبه ---
+        function computeLoShu(name, year, month, day) {
+            // 1. اعتبارسنجی نام
+            if (!isValidEnglishName(name)) {
+                return { error: 'name' };
+            }
+
+            // 2. اعتبارسنجی تاریخ
+            if (!isValidDate(year, month, day)) {
+                return { error: 'date' };
+            }
+
+            const cleanNameStr = cleanName(name);
+
+            // 3. ارقام تاریخ (با صفرها)
+            const dateStr = String(year) + pad2(month) + pad2(day);
+            let digitsWithZero = [];
+            for (let ch of dateStr) {
+                digitsWithZero.push(parseInt(ch, 10));
+            }
+            // ارقام بدون صفر (برای لیست نهایی)
+            let digits = [];
+            for (let ch of dateStr) {
+                if (ch !== '0') digits.push(parseInt(ch, 10));
+            }
+
+            // 4. عدد راهنما (از روز)
+            const driver = digitalRoot(day);
+
+            // 5. عدد هادی (جمع کل ارقام تاریخ)
+            let totalSum = 0;
+            for (let ch of dateStr) {
+                totalSum += parseInt(ch, 10);
+            }
+            const conductor = digitalRoot(totalSum);
+
+            // 6. اعداد نام
+            const upperName = cleanNameStr.toUpperCase();
+            let nameNums = [];
+            let nameLetters = [];
+            for (let ch of upperName) {
+                if (ch === ' ') continue;
+                nameLetters.push(ch);
+                nameNums.push(letterMap[ch]);
+            }
+
+            if (nameNums.length === 0) {
+                return { error: 'name' };
+            }
+
+            // 7. عدد سرنوشت
+            const nameSum = nameNums.reduce((a,b) => a + b, 0);
+            const destiny = digitalRoot(nameSum);
+
+            // 8. لیست نهایی
+            const finalList = [...digits, driver, conductor, ...nameNums, destiny];
+
+            // 9. شمارش
+            const countMap = { 1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0 };
+            for (let num of finalList) {
+                if (countMap[num] !== undefined) countMap[num]++;
+            }
+
+            // 10. جدول لوشو
+            const gridPositions = [
+                [4,9,2],
+                [3,5,7],
+                [8,1,6]
+            ];
+            const gridData = gridPositions.map(row => row.map(num => ({
+                number: num,
+                count: countMap[num] || 0
+            })));
+
+            const missing = Object.keys(countMap).filter(k => countMap[k] === 0).map(Number);
+
+            return {
+                gridData,
+                countMap,
+                driver,
+                conductor,
+                destiny,
+                finalList,
+                missing,
+                nameNums,
+                nameLetters,
+                digits,
+                digitsWithZero,
+                year, month, day,
+                nameRaw: cleanNameStr,
+                dateStr: dateStr
+            };
+        }
+
+        // --- رندر ---
+        function renderResult(result) {
+            if (!result || result.error) {
+                if (result && result.error === 'name') {
+                    nameError.classList.add('show');
+                    nameInput.classList.add('input-error');
+                    dateError.classList.remove('show');
+                    dateError.style.display = 'none';
+                } else if (result && result.error === 'date') {
+                    dateError.classList.add('show');
+                    dateError.style.display = 'flex';
+                    nameError.classList.remove('show');
+                    nameInput.classList.remove('input-error');
+                } else {
+                    nameError.classList.remove('show');
+                    nameInput.classList.remove('input-error');
+                    dateError.classList.remove('show');
+                    dateError.style.display = 'none';
+                }
+                resultArea.style.display = 'none';
+                return;
+            }
+
+            nameError.classList.remove('show');
+            nameInput.classList.remove('input-error');
+            dateError.classList.remove('show');
+            dateError.style.display = 'none';
+
+            const { gridData, countMap, missing, driver, conductor, destiny, finalList, nameNums, nameLetters, digits, digitsWithZero, year, month, day, nameRaw, dateStr } = result;
+
+            // رندر جدول
+            gridContainer.innerHTML = '';
+            for (let row of gridData) {
+                for (let cell of row) {
+                    const div = document.createElement('div');
+                    div.className = 'cell';
+                    const numSpan = document.createElement('div');
+                    numSpan.className = 'cell-number';
+                    numSpan.textContent = cell.number;
+                    const countSpan = document.createElement('div');
+                    countSpan.className = 'cell-count';
+                    const count = cell.count;
+                    if (count === 0) countSpan.classList.add('zero');
+                    else if (count === 1) countSpan.classList.add('normal');
+                    else if (count === 2) countSpan.classList.add('strong');
+                    else if (count === 3) countSpan.classList.add('very-strong');
+                    else countSpan.classList.add('extreme');
+                    countSpan.textContent = count;
+
+                    const interpSpan = document.createElement('div');
+                    interpSpan.className = 'cell-interp';
+                    const interpKey = count >= 4 ? 4 : count;
+                    interpSpan.textContent = interpMap[interpKey] || '';
+
+                    div.appendChild(numSpan);
+                    div.appendChild(countSpan);
+                    div.appendChild(interpSpan);
+                    gridContainer.appendChild(div);
+                }
+            }
+
+            // آمار
+            statsContainer.innerHTML = '';
+            for (let k = 1; k <= 9; k++) {
+                const val = countMap[k];
+                const div = document.createElement('div');
+                div.className = 'stat-item';
+                div.innerHTML = `<strong>${k}</strong> : ${val}`;
+                statsContainer.appendChild(div);
+            }
+
+            // اعداد غایب
+            if (missing.length > 0) {
+                missingContainer.innerHTML = `🔹 اعداد غایب: <span>${missing.join(' , ')}</span>  (چالش)`;
+            } else {
+                missingContainer.innerHTML = `✅ همه اعداد ۱ تا ۹ حضور دارند (تعادل نسبی)`;
+            }
+
+            // --- نمایش محاسبات کامل ---
+            // تاریخ
+            const dateDisplay = `${year}/${pad2(month)}/${pad2(day)}`;
+            const digitsStr = digits.join(' , ');
+            const digitsWithZeroStr = digitsWithZero.join(' , ');
+
+            // نام
+            const nameMapStr = nameLetters.map((l,i) => `${l}=${nameNums[i]}`).join(' , ');
+            const nameSum = nameNums.reduce((a,b) => a + b, 0);
+            const nameSumStr = nameNums.join(' + ');
+            const destinyCalc = nameSum > 9 ? ` = ${nameSum} → ${digitalRoot(nameSum)}` : ` = ${nameSum}`;
+
+            // تاریخ جمع
+            let dateSum = 0;
+            for (let ch of dateStr) dateSum += parseInt(ch, 10);
+            const dateSumStr = dateStr.split('').join(' + ');
+            const conductorCalc = dateSum > 9 ? ` = ${dateSum} → ${digitalRoot(dateSum)}` : ` = ${dateSum}`;
+
+            // لیست نهایی
+            const finalListStr = finalList.join(' , ');
+
+            let html = '';
+            html += `<b>📅 تاریخ تولد:</b> ${dateDisplay} &nbsp;→ ارقام (با صفر): ${digitsWithZeroStr} → ارقام (بدون صفر): ${digitsStr}<br>`;
+            html += `<b>🔢 عدد راهنما (جمع ارقام روز):</b> ${day} → ${String(day).split('').join('+')} = ${digitalRoot(day)}<br>`;
+            html += `<b>🔢 عدد هادی (جمع کل ارقام تاریخ):</b> ${dateStr} → ${dateSumStr}${conductorCalc}<br>`;
+            html += `<b>📛 نام:</b> ${nameRaw} → ${nameMapStr}<br>`;
+            html += `<b>🔢 عدد سرنوشت (جمع اعداد نام):</b> ${nameSumStr}${destinyCalc}<br>`;
+            html += `<b>📋 لیست نهایی:</b> ${finalListStr}<br>`;
+            html += `<b>📊 شمارش نهایی:</b> `;
+            for (let k = 1; k <= 9; k++) {
+                html += `${k}: ${countMap[k]}  `;
+            }
+
+            calculationDetails.innerHTML = html;
+            resultArea.style.display = 'block';
+        }
+
+        // --- اعتبارسنجی و کنترل دکمه ---
+        function validateAndToggle() {
+            const name = nameInput.value;
+            const isValid = isValidEnglishName(name);
+            if (!isValid && name.length > 0) {
+                nameError.classList.add('show');
+                nameInput.classList.add('input-error');
+                generateBtn.disabled = true;
+            } else if (!isValid && name.length === 0) {
+                nameError.classList.remove('show');
+                nameInput.classList.remove('input-error');
+                generateBtn.disabled = true;
+            } else {
+                nameError.classList.remove('show');
+                nameInput.classList.remove('input-error');
+                generateBtn.disabled = false;
+            }
+            // تاریخ هم بررسی میشود (اما سلکت‌ها همیشه مقدار معتبر دارند، فقط بررسی روزهای نامعتبر)
+            const day = parseInt(daySelect.value, 10);
+            const month = parseInt(monthSelect.value, 10);
+            const year = parseInt(yearSelect.value, 10);
+            if (!isValidDate(year, month, day)) {
+                dateError.classList.add('show');
+                dateError.style.display = 'flex';
+                generateBtn.disabled = true;
+            } else {
+                dateError.classList.remove('show');
+                dateError.style.display = 'none';
+                if (isValid) generateBtn.disabled = false;
+            }
+        }
+
+        // --- رویدادها ---
+        function handleGenerate() {
+            const name = nameInput.value;
+            const day = parseInt(daySelect.value, 10);
+            const month = parseInt(monthSelect.value, 10);
+            const year = parseInt(yearSelect.value, 10);
+
+            if (!isValidEnglishName(name)) {
+                nameError.classList.add('show');
+                nameInput.classList.add('input-error');
+                resultArea.style.display = 'none';
+                return;
+            }
+
+            if (!isValidDate(year, month, day)) {
+                dateError.classList.add('show');
+                dateError.style.display = 'flex';
+                resultArea.style.display = 'none';
+                return;
+            }
+
+            const result = computeLoShu(name, year, month, day);
+            renderResult(result);
+        }
+
+        // ورودی نام: فقط حروف و فاصله
+        nameInput.addEventListener('input', function(e) {
+            const val = this.value;
+            // حذف کاراکترهای غیرمجاز
+            const filtered = val.replace(/[^A-Za-z\s]/g, '');
+            if (filtered !== val) {
+                this.value = filtered;
+                nameError.classList.add('show');
+                nameInput.classList.add('input-error');
+                generateBtn.disabled = true;
+            } else {
+                // بررسی اینکه آیا فقط حروف و فاصله است
+                if (isValidEnglishName(filtered)) {
+                    nameError.classList.remove('show');
+                    nameInput.classList.remove('input-error');
+                    // بررسی تاریخ هم انجام شود
+                    const day = parseInt(daySelect.value, 10);
+                    const month = parseInt(monthSelect.value, 10);
+                    const year = parseInt(yearSelect.value, 10);
+                    if (isValidDate(year, month, day)) {
+                        generateBtn.disabled = false;
+                    }
+                } else {
+                    nameError.classList.add('show');
+                    nameInput.classList.add('input-error');
+                    generateBtn.disabled = true;
+                }
+            }
+            // اگر خالی شد
+            if (this.value.trim().length === 0) {
+                nameError.classList.remove('show');
+                nameInput.classList.remove('input-error');
+                generateBtn.disabled = true;
+            }
+            // تاریخ هم بررسی شود
+            const day2 = parseInt(daySelect.value, 10);
+            const month2 = parseInt(monthSelect.value, 10);
+            const year2 = parseInt(yearSelect.value, 10);
+            if (!isValidDate(year2, month2, day2)) {
+                dateError.classList.add('show');
+                dateError.style.display = 'flex';
+                generateBtn.disabled = true;
+            } else {
+                dateError.classList.remove('show');
+                dateError.style.display = 'none';
+                if (isValidEnglishName(this.value)) generateBtn.disabled = false;
+            }
+        });
+
+        // تغییر سلکت‌های تاریخ
+        daySelect.addEventListener('change', validateAndToggle);
+        monthSelect.addEventListener('change', validateAndToggle);
+        yearSelect.addEventListener('change', validateAndToggle);
+
+        generateBtn.addEventListener('click', handleGenerate);
+
+        // Enter
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (e.target === nameInput || e.target === daySelect || e.target === monthSelect || e.target === yearSelect) {
+                    e.preventDefault();
+                    if (!generateBtn.disabled) handleGenerate();
+                }
+            }
+        });
+
+        // اجرای اولیه
+        window.addEventListener('DOMContentLoaded', function() {
+            // تنظیم اولیه
+            nameInput.value = '';
+            generateBtn.disabled = true;
+            setTimeout(() => {
+                validateAndToggle();
+            }, 50);
+        });
+
+    })();
+</script>
+</body>
+</html>
